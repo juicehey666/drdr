@@ -2,16 +2,33 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
+.coverage
+htmlcov/
+.mypy_cache/
 .ipynb_checkpoints/
 .idea/
 .vscode/
 .env
 .env.*
+.DS_Store
 
-data/*
+# Local datasets. Keep only the documented directory skeleton in Git.
+data/**
+!data/README.md
 !data/.gitkeep
-outputs/*
+
+# Model binaries and converted/exported models.
+models/**
+!models/README.md
+!models/.gitkeep
+
+# Generated experiment artifacts.
+outputs/**
+!outputs/README.md
 !outputs/.gitkeep
+
+# Local downloader output.
+wget-log*
 
 *.ckpt
 *.onnx

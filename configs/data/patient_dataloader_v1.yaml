@@ -1,0 +1,84 @@
+version: patient_dataloader_v1
+seed: 20260929
+
+inputs:
+  patient_manifest: data/splits/patient_split_v1/patient_split_manifest.csv
+  patient_manifest_sha256: 1e8b6e135c3cdb7e7d1840d5ac7ccb9dc4039656eb410a26921c53535f8341b3
+  image_manifest: data/splits/patient_split_v1/image_split_manifest.csv
+  image_manifest_sha256: dacc4a0d5bae150caca3301f01238f6751e93fb3464c415e2122083c982529c7
+  allowed_splits: [train, validation, internal_test, external_test]
+
+image:
+  size: 512
+  mode: RGB
+  value_range: [0.0, 1.0]
+  normalization: imagenet_convnext
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+  preserve_all_views: true
+  padded_tensor_value: 0.0
+
+train_augmentation:
+  version: aug_moderate_v1
+  applies_to: train_only
+  horizontal_flip:
+    probability: 0.5
+  affine:
+    probability: 0.5
+    rotation_degrees: [-15.0, 15.0]
+    scale: [0.95, 1.05]
+    max_translation_fraction: 0.025
+    interpolation: bilinear
+    fill_rgb: [0, 0, 0]
+  color_jitter:
+    probability: 0.5
+    brightness: 0.10
+    contrast: 0.10
+    saturation: 0.10
+    hue: 0.02
+  gamma:
+    probability: 0.2
+    range: [0.90, 1.10]
+  gaussian_blur:
+    probability: 0.1
+    kernel_size: 3
+    sigma: [0.1, 1.0]
+  vertical_flip: false
+  random_resized_crop: false
+  mixup: false
+  cutmix: false
+  random_erasing: false
+
+clinical:
+  version: clinical_4_v1
+  feature_order: [age, sex, diabetes_duration_years, insulin_use]
+  observed_columns:
+    age: age_observed
+    sex: sex_observed
+    diabetes_duration_years: diabetes_duration_observed
+    insulin_use: insulin_observed
+  sex_mapping:
+    female: 0.0
+    male: 1.0
+  fit_split: train
+  fit_dataset: brset
+  imputation: observed_train_mean
+  standardization: observed_train_zscore
+  standard_deviation_ddof: 0
+  minimum_standard_deviation: 1.0e-8
+  append_missing_mask: true
+
+loader:
+  train_shuffle: true
+  evaluation_shuffle: false
+  drop_last: false
+  pin_memory: true
+  persistent_workers: true
+  prefetch_factor: 2
+  formal_num_workers: 4
+  smoke_batch_size: 2
+  smoke_num_workers: 0
+
+output:
+  root: data/processed/patient_dataloader_v1
+  existing_policy: error

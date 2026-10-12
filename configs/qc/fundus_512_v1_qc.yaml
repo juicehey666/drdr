@@ -1,0 +1,24 @@
+version: fundus_512_v1_qc
+seed: 20260929
+max_comparison_pairs: 24
+pairs_per_page: 4
+stratify_by:
+  - dataset
+  - camera
+  - icdr
+  - crop_fallback
+figure:
+  dpi: 300
+  font_family: serif
+  font_serif:
+    - Times New Roman
+    - DejaVu Serif
+  palette:
+    - "#E69F00"
+    - "#56B4E9"
+    - "#009E73"
+    - "#0072B2"
+    - "#D55E00"
+    - "#CC79A7"
+    - "#000000"
+

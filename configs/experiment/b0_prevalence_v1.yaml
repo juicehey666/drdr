@@ -1,0 +1,9 @@
+defaults:
+  - ../training/patient_rdr_base_v1.yaml
+  - ../model/b0_prevalence_v1.yaml
+
+experiment:
+  name: b0_prevalence_v1
+  tag: baseline
+  description: Training-prevalence constant sanity baseline.
+

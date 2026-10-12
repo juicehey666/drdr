@@ -1,0 +1,9 @@
+defaults:
+  - ../training/patient_rdr_base_v1.yaml
+  - ../model/b1_mask_mlp_v1.yaml
+
+experiment:
+  name: b1_mask_v1
+  tag: diagnostic
+  description: Missingness-mask-only shortcut diagnostic baseline.
+

@@ -1,0 +1,9 @@
+defaults:
+  - ../training/patient_rdr_base_v1.yaml
+  - ../model/b2_convnext_tiny_v1.yaml
+
+experiment:
+  name: b2_convnext_tiny_v1
+  tag: baseline
+  description: Shared ConvNeXt-Tiny eye encoder with no cross-eye feature interaction.
+

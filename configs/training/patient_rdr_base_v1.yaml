@@ -1,0 +1,55 @@
+schema_version: patient_rdr_training_v1
+
+task:
+  name: patient_rdr
+  analysis_unit: patient
+  label: patient_rDR
+  positive_grade_threshold: 2
+
+data:
+  dataloader_config: configs/data/patient_dataloader_v1.yaml
+  clinical_normalizer: data/processed/patient_dataloader_v1/clinical_normalization.json
+  train_split: train
+  validation_split: validation
+  load_images: false
+
+training:
+  epochs: 30
+  batch_size: 32
+  num_workers: 4
+  gradient_accumulation_steps: 1
+  gradient_clip_norm: 1.0
+
+optimizer:
+  name: adamw
+  learning_rate: 0.0001
+  betas: [0.9, 0.999]
+  epsilon: 1.0e-8
+  weight_decay: 0.01
+
+scheduler:
+  name: cosine_with_warmup
+  warmup_ratio: 0.05
+
+selection:
+  metric: auprc
+  mode: max
+  patience: 8
+  minimum_delta: 0.0001
+
+evaluation:
+  splits: [validation]
+  batch_size: 64
+  development_threshold: 0.5
+
+runtime:
+  seed: 20260929
+  device: auto
+  precision: bf16
+  deterministic: true
+  max_batches: null
+
+output:
+  root: outputs/experiments
+  existing_policy: error
+

@@ -1,0 +1,26 @@
+model:
+  name: b2_convnext_tiny
+  type: bilateral_independent_image
+  backbone: convnext_tiny
+  pretrained: true
+  freeze_encoder: false
+  view_pooling: masked_mean
+  patient_pooling: max_logit
+  dropout: 0.20
+
+data:
+  load_images: true
+
+training:
+  epochs: 30
+  batch_size: 4
+  num_workers: 4
+  gradient_accumulation_steps: 4
+
+optimizer:
+  learning_rate: 0.0001
+  weight_decay: 0.05
+
+evaluation:
+  batch_size: 4
+

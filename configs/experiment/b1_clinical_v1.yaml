@@ -1,0 +1,9 @@
+defaults:
+  - ../training/patient_rdr_base_v1.yaml
+  - ../model/b1_clinical_mlp_v1.yaml
+
+experiment:
+  name: b1_clinical_v1
+  tag: baseline
+  description: Four harmonized clinical values with train-fitted mean imputation.
+

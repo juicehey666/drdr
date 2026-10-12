@@ -1,0 +1,4 @@
+model:
+  name: b0_prevalence
+  type: prevalence_constant
+

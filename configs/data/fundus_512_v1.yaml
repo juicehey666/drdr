@@ -1,0 +1,88 @@
+version: fundus_512_v1
+protocol: docs/image_preprocessing_protocol_v1.md
+
+datasets:
+  brset:
+    dataset_version: "1.0.2"
+    image_dir: data/raw/brset_v1.0.2/archive/fundus_photos
+    metadata_csv: data/raw/brset_v1.0.2/archive/label_brset.csv
+    image_column: image_id
+    image_extension: .jpg
+    patient_column: patient_id
+    laterality_column: exam_eye
+    camera_column: camera
+    icdr_column: DR_ICDR
+    quality_column: quality
+  mbrset:
+    dataset_version: "1.0"
+    image_dir: data/raw/mbrset_v1.0/archive/images
+    metadata_csv: data/raw/mbrset_v1.0/archive/labels_mbrset.csv
+    image_column: file
+    image_extension: ""
+    patient_column: patient
+    laterality_column: laterality
+    camera_constant: Phelcom Eyer
+    icdr_column: final_icdr
+    quality_column: final_quality
+
+detection:
+  preview_long_side: 512
+  luma_threshold_8bit: 10
+  closing_kernel_size: 5
+  closing_iterations: 1
+  connectivity: 8
+  bbox_expansion_fraction: 0.02
+  min_foreground_fraction: 0.30
+  min_bbox_width_fraction: 0.50
+  min_bbox_height_fraction: 0.50
+  bbox_aspect_ratio_min: 0.75
+  bbox_aspect_ratio_max: 1.33
+  require_center_coverage: true
+
+output:
+  root: data/processed/fundus_512_v1
+  size: 512
+  interpolation: bicubic
+  format: JPEG
+  extension: .jpg
+  jpeg_quality: 95
+  jpeg_subsampling: 0
+  jpeg_optimize: false
+  background_rgb: [0, 0, 0]
+  existing_policy: error
+
+normalization:
+  storage_range: [0, 255]
+  applied_offline: false
+  policy: backbone_official_processor
+  imagenet_mean: [0.485, 0.456, 0.406]
+  imagenet_std: [0.229, 0.224, 0.225]
+
+training_augmentation:
+  version: aug_moderate_v1
+  applies_to: brset_train_only
+  horizontal_flip:
+    probability: 0.5
+  affine:
+    probability: 0.5
+    rotation_degrees: [-15.0, 15.0]
+    scale: [0.95, 1.05]
+    max_translation_fraction: 0.025
+  color_jitter:
+    probability: 0.5
+    brightness: 0.10
+    contrast: 0.10
+    saturation: 0.10
+    hue: 0.02
+  gamma:
+    probability: 0.2
+    range: [0.90, 1.10]
+  gaussian_blur:
+    probability: 0.1
+    sigma: [0.1, 1.0]
+  vertical_flip: false
+  random_resized_crop: false
+  mixup: false
+  cutmix: false
+  random_erasing: false
+
